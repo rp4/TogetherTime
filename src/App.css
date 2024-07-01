@@ -1,0 +1,60 @@
+    /* src/App.css */
+
+    .app-container {
+      text-align: center;
+    }
+
+    .app-title {
+      font-family: 'Baloo', sans-serif;
+      font-size: 32px;
+      font-weight: bold;
+      color: #333333;
+    }
+
+    .selector-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .custom-form-control {
+      min-width: 120px;
+      margin: 0 10px;
+    }
+
+    .custom-input-label {
+      font-family: 'Baloo', sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333333;
+    }
+
+    .custom-select {
+      font-family: 'Baloo', sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333333;
+    }
+
+    .custom-menu-item {
+      font-family: 'Baloo', sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333333;
+    }
+
+    .chart-container {
+      position: relative;
+    }
+
+    .app-description {
+      font-family: 'Varela Round', sans-serif;
+      color: #666666;
+      font-size: 30px;
+    }
+
+    .highlight-percentage {
+      color: red;
+      font-weight: bold;
+      font-size: 36px;
+    }
