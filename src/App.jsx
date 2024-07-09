@@ -112,19 +112,20 @@ const App = () => {
         pointBorderColor: "black",
         pointRadius: 0,
         pointHoverRadius: 0,
+        order: 1, // Ensure the black line is drawn first
       },
       {
         label: "Selected Age",
         data: [{ x: redPoint.x, y: redPoint.y }],
-        fill: false,
+        fill: true,
         backgroundColor: "red",
         borderColor: "red",
         pointBackgroundColor: "red",
         pointBorderColor: "red",
         pointRadius: 10,
-        pointHoverRadius: 10,
+        pointHoverRadius: 0,
         showLine: false,
-        zIndex: 10, // Ensure the red point is in front
+        order: 2, // Ensure the red point is drawn on top
       },
     ],
   };
@@ -146,9 +147,8 @@ const App = () => {
         },
         ticks: {
           font: {
-            family: "Baloo",
-            size: 24,
-            weight: "bold",
+            family: "Varela Round",
+            size: 16,
           },
           color: "#333333",
         },
@@ -159,7 +159,7 @@ const App = () => {
       y: {
         title: {
           display: true,
-          text: "Time Already Spent",
+          text: "% Time Spent",
           font: {
             family: "Baloo",
             size: 28,
@@ -182,6 +182,8 @@ const App = () => {
         grid: {
           display: false,
         },
+        min: 0,
+        max: 1.2, // Elongate the y-axis
       },
     },
     plugins: {
@@ -189,12 +191,7 @@ const App = () => {
         display: false,
       },
       tooltip: {
-        titleFont: {
-          family: "Baloo",
-        },
-        bodyFont: {
-          family: "Baloo",
-        },
+        enabled: false, // Disable tooltips
       },
       roughPlugin: {}, // Enable the Rough.js plugin
     },
@@ -263,9 +260,9 @@ const App = () => {
       </div>
       <p className="app-description">
         You've already spent{" "}
-        <span className="highlight-percentage">{`${Math.round(interpolatedY * 100)}%`}</span>
-        of total time with your child (based on national averages). Remember to
-        cherish every moment.
+        <span className="highlight-percentage">{`${Math.round(interpolatedY * 100)}%`}</span>{" "}
+        of the total time with your child (based on national averages). Remember
+        to cherish every moment.
       </p>
     </div>
   );
