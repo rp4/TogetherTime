@@ -140,7 +140,7 @@ const App = () => {
           text: "Child's Age (years)",
           font: {
             family: "Baloo",
-            size: 28,
+            size: 18,
             weight: "bold",
           },
           color: "#333333",
@@ -148,7 +148,7 @@ const App = () => {
         ticks: {
           font: {
             family: "Varela Round",
-            size: 16,
+            size: 14,
           },
           color: "#333333",
         },
@@ -162,7 +162,7 @@ const App = () => {
           text: "% Time Spent",
           font: {
             family: "Baloo",
-            size: 28,
+            size: 18,
             weight: "bold",
           },
           color: "#333333",
