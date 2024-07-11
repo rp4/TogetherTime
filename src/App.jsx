@@ -261,8 +261,7 @@ const App = () => {
       <p className="app-description">
         You've already spent{" "}
         <span className="highlight-percentage">{`${Math.round(interpolatedY * 100)}%`}</span>{" "}
-        of the total time with your child (based on national averages). Remember
-        to cherish every moment.
+        of the total time with your child (based on national averages).
       </p>
     </div>
   );
