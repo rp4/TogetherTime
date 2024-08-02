@@ -31,10 +31,10 @@ ChartJS.register(
 
 const dataPoints = [
   { x: 0, y: 0 },
-  { x: 12, y: 0.75 },
-  { x: 18, y: 0.9 },
-  { x: 30, y: 0.97 },
-  { x: 60, y: 1 },
+  { x: 144, y: 0.75 },
+  { x: 216, y: 0.9 },
+  { x: 360, y: 0.97 },
+  { x: 720, y: 1 },
 ];
 
 const interpolate = (points, xValues) => {
@@ -48,15 +48,12 @@ const interpolate = (points, xValues) => {
   });
 };
 
-// Function to calculate the age in years
-const calculateAge = (birthdate) => {
+// Function to calculate the age in months
+const calculateAgeInMonths = (birthdate) => {
   const today = new Date();
-  let age = today.getFullYear() - birthdate.getFullYear();
-  const m = today.getMonth() - birthdate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {
-    age--;
-  }
-  return age;
+  const yearsDifference = today.getFullYear() - birthdate.getFullYear();
+  const monthsDifference = today.getMonth() - birthdate.getMonth();
+  return yearsDifference * 12 + monthsDifference;
 };
 
 // Define roughPlugin
@@ -83,7 +80,7 @@ const roughPlugin = {
 const App = () => {
   const [birthMonth, setBirthMonth] = useState(3); // Default to April (0-indexed)
   const [birthYear, setBirthYear] = useState(2023); // Default to 2023
-  const xValues = Array.from({ length: 500 }, (_, i) => i * (60 / 499));
+  const xValues = Array.from({ length: 500 }, (_, i) => i * (720 / 499));
   const interpolatedPoints = interpolate(dataPoints, xValues);
 
   const handleMonthChange = (event) => {
@@ -94,10 +91,10 @@ const App = () => {
     setBirthYear(event.target.value);
   };
 
-  const ageInYears = calculateAge(new Date(birthYear, birthMonth, 1));
-  const interpolatedY = interpolate(dataPoints, [ageInYears])[0].y;
+  const ageInMonths = calculateAgeInMonths(new Date(birthYear, birthMonth, 1));
+  const interpolatedY = interpolate(dataPoints, [ageInMonths])[0].y;
 
-  const redPoint = { x: ageInYears, y: interpolatedY };
+  const redPoint = { x: ageInMonths, y: interpolatedY };
 
   const data = {
     labels: xValues,
@@ -140,15 +137,19 @@ const App = () => {
           text: "Child's Age (years)",
           font: {
             family: "Baloo",
-            size: 18,
+            size: 28,
             weight: "bold",
           },
           color: "#333333",
         },
         ticks: {
+          callback: function (value) {
+            return value / 12; // Convert months to years
+          },
+          stepSize: 120, // Display labels every 10 years (120 months)
           font: {
             family: "Varela Round",
-            size: 14,
+            size: 16,
           },
           color: "#333333",
         },
@@ -162,7 +163,7 @@ const App = () => {
           text: "% Time Spent",
           font: {
             family: "Baloo",
-            size: 18,
+            size: 28,
             weight: "bold",
           },
           color: "#333333",
@@ -261,7 +262,8 @@ const App = () => {
       <p className="app-description">
         You've already spent{" "}
         <span className="highlight-percentage">{`${Math.round(interpolatedY * 100)}%`}</span>{" "}
-        of the total time with your child (based on national averages).
+        of the total time with your child (based on national averages). Remember
+        to cherish every moment.
       </p>
     </div>
   );
