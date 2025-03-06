@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,7 +15,8 @@ import { Line } from "react-chartjs-2";
 import rough from "roughjs/bin/rough";
 import CubicSpline from "cubic-spline";
 import "@fontsource/comic-neue";
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Select, MenuItem, FormControl, InputLabel, Divider } from "@mui/material";
+import EmailSubscription from "./EmailSubscription";
 import "./App.css";
 
 ChartJS.register(
@@ -80,8 +81,71 @@ const roughPlugin = {
 const App = () => {
   const [birthMonth, setBirthMonth] = useState(3); // Default to April (0-indexed)
   const [birthYear, setBirthYear] = useState(2023); // Default to 2023
+  const [isMobile, setIsMobile] = useState(false);
+  const chartRef = useRef(null);
   const xValues = Array.from({ length: 500 }, (_, i) => i * (720 / 499));
   const interpolatedPoints = interpolate(dataPoints, xValues);
+
+  // Check if the device is mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+
+  // Add resize observer to ensure chart resizes properly
+  useEffect(() => {
+    if (chartRef.current) {
+      const resizeObserver = new ResizeObserver(() => {
+        if (chartRef.current && chartRef.current.current) {
+          setTimeout(() => {
+            if (chartRef.current && chartRef.current.current) {
+              const chart = chartRef.current.current;
+              if (chart) {
+                chart.update('resize');
+              }
+            }
+          }, 0);
+        }
+      });
+      
+      const chartContainer = document.querySelector('.chart-container');
+      if (chartContainer) {
+        resizeObserver.observe(chartContainer);
+      }
+      
+      return () => {
+        if (chartContainer) {
+          resizeObserver.unobserve(chartContainer);
+        }
+        resizeObserver.disconnect();
+      };
+    }
+  }, [chartRef.current]);
+
+  // Add window resize event listener to update chart
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartRef.current && chartRef.current.current) {
+        chartRef.current.current.update();
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleMonthChange = (event) => {
     setBirthMonth(event.target.value);
@@ -119,7 +183,7 @@ const App = () => {
         borderColor: "red",
         pointBackgroundColor: "red",
         pointBorderColor: "red",
-        pointRadius: 10,
+        pointRadius: isMobile ? 6 : 10,
         pointHoverRadius: 0,
         showLine: false,
         order: 2, // Ensure the red point is drawn on top
@@ -128,6 +192,21 @@ const App = () => {
   };
 
   const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    resizeDelay: 100,
+    onResize: function(chart, size) {
+      // This ensures the chart redraws properly when resized
+      chart.resize();
+    },
+    layout: {
+      padding: {
+        top: 10,
+        right: 20,
+        bottom: 10,
+        left: 20
+      }
+    },
     scales: {
       x: {
         type: "linear",
@@ -137,7 +216,7 @@ const App = () => {
           text: "Child's Age (years)",
           font: {
             family: "Baloo",
-            size: 28,
+            size: isMobile ? 18 : 28,
             weight: "bold",
           },
           color: "#333333",
@@ -146,10 +225,10 @@ const App = () => {
           callback: function (value) {
             return value / 12; // Convert months to years
           },
-          stepSize: 120, // Display labels every 10 years (120 months)
+          stepSize: isMobile ? 180 : 120, // Display fewer labels on mobile
           font: {
             family: "Varela Round",
-            size: 16,
+            size: isMobile ? 12 : 16,
           },
           color: "#333333",
         },
@@ -163,7 +242,7 @@ const App = () => {
           text: "% Time Spent",
           font: {
             family: "Baloo",
-            size: 28,
+            size: isMobile ? 18 : 28,
             weight: "bold",
           },
           color: "#333333",
@@ -175,7 +254,7 @@ const App = () => {
           },
           font: {
             family: "Baloo",
-            size: 16,
+            size: isMobile ? 12 : 16,
             weight: "bold",
           },
           color: "#333333",
@@ -257,7 +336,7 @@ const App = () => {
         </FormControl>
       </div>
       <div className="chart-container">
-        <Line data={data} options={options} plugins={[roughPlugin]} />
+        <Line ref={chartRef} data={data} options={options} plugins={[roughPlugin]} />
       </div>
       <p className="app-description">
         You've already spent{" "}
@@ -265,6 +344,10 @@ const App = () => {
         of the total time with your child (based on national averages). Remember
         to cherish every moment.
       </p>
+      
+      <Divider sx={{ margin: '30px 0' }} />
+      
+      <EmailSubscription birthMonth={birthMonth} birthYear={birthYear} />
     </div>
   );
 };
