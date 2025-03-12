@@ -15,7 +15,15 @@ import { Line } from "react-chartjs-2";
 import rough from "roughjs/bin/rough";
 import CubicSpline from "cubic-spline";
 import "@fontsource/comic-neue";
-import { Select, MenuItem, FormControl, InputLabel, Divider } from "@mui/material";
+import { 
+  Select, 
+  MenuItem, 
+  FormControl, 
+  InputLabel, 
+  Divider,
+  Box,
+  Paper
+} from "@mui/material";
 import EmailSubscription from "./EmailSubscription";
 import "./App.css";
 
@@ -167,10 +175,10 @@ const App = () => {
         label: "Monotone Cubic Fit Curve",
         data: interpolatedPoints.map((p) => p.y),
         fill: false,
-        backgroundColor: "black",
-        borderColor: "black",
-        pointBackgroundColor: "black",
-        pointBorderColor: "black",
+        backgroundColor: "#444444",
+        borderColor: "#444444",
+        pointBackgroundColor: "#444444",
+        pointBorderColor: "#444444",
         pointRadius: 0,
         pointHoverRadius: 0,
         order: 1, // Ensure the black line is drawn first
@@ -179,10 +187,10 @@ const App = () => {
         label: "Selected Age",
         data: [{ x: redPoint.x, y: redPoint.y }],
         fill: true,
-        backgroundColor: "red",
-        borderColor: "red",
-        pointBackgroundColor: "red",
-        pointBorderColor: "red",
+        backgroundColor: "#e63946",
+        borderColor: "#e63946",
+        pointBackgroundColor: "#e63946",
+        pointBorderColor: "#e63946",
         pointRadius: isMobile ? 6 : 10,
         pointHoverRadius: 0,
         showLine: false,
@@ -289,12 +297,13 @@ const App = () => {
           <InputLabel
             id="month-label"
             className="custom-input-label"
-          ></InputLabel>
+          >Birth Month</InputLabel>
           <Select
             labelId="month-label"
             value={birthMonth}
             onChange={handleMonthChange}
             className="custom-select"
+            label="Birth Month"
           >
             {[
               "January",
@@ -320,12 +329,13 @@ const App = () => {
           <InputLabel
             id="year-label"
             className="custom-input-label"
-          ></InputLabel>
+          >Birth Year</InputLabel>
           <Select
             labelId="year-label"
             value={birthYear}
             onChange={handleYearChange}
             className="custom-select"
+            label="Birth Year"
           >
             {years.map((year) => (
               <MenuItem key={year} value={year} className="custom-menu-item">
@@ -335,9 +345,9 @@ const App = () => {
           </Select>
         </FormControl>
       </div>
-      <div className="chart-container">
+      <Paper elevation={0} className="chart-container">
         <Line ref={chartRef} data={data} options={options} plugins={[roughPlugin]} />
-      </div>
+      </Paper>
       <p className="app-description">
         You've already spent{" "}
         <span className="highlight-percentage">{`${Math.round(interpolatedY * 100)}%`}</span>{" "}
@@ -345,9 +355,13 @@ const App = () => {
         to cherish every moment.
       </p>
       
-      <Divider sx={{ margin: '30px 0' }} />
+      <Divider sx={{ margin: '30px 0', width: '80%', mx: 'auto' }} />
       
       <EmailSubscription birthMonth={birthMonth} birthYear={birthYear} />
+      
+      <div className="footer-link">
+        <a href="https://dadyears.fun" target="_blank" rel="noopener noreferrer">@DadYears</a>
+      </div>
     </div>
   );
 };

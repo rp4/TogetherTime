@@ -3,10 +3,12 @@
 
     .app-container {
       text-align: center;
-      padding: 0 10px;
+      padding: 2rem 1.5rem;
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
+      background-color: #f8f8f8;
+      min-height: 100vh;
     }
 
     .app-title {
@@ -14,24 +16,27 @@
       font-size: 36px;
       font-weight: bold;
       color: #333333;
+      margin-bottom: 1.5rem;
     }
 
     .selector-container {
       display: flex;
       justify-content: center;
       margin: 20px 0;
+      gap: 1.5rem;
     }
 
     .custom-form-control {
-      min-width: 120px;
+      min-width: 150px;
       margin: 0 10px;
+      position: relative;
     }
 
     .custom-input-label {
       font-family: 'Baloo', sans-serif;
       font-size: 16px;
       font-weight: bold;
-      color: #333333;
+      color: #444444;
     }
 
     .custom-select {
@@ -39,6 +44,7 @@
       font-size: 16px;
       font-weight: bold;
       color: #333333;
+      border-radius: 6px;
     }
 
     .custom-menu-item {
@@ -53,10 +59,14 @@
       width: 100%;
       height: 60vh;
       min-height: 400px;
-      margin: 0 auto;
+      margin: 2rem auto;
       display: flex;
       justify-content: center;
       align-items: center;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
     }
 
     .chart-container canvas {
@@ -66,18 +76,23 @@
 
     .app-description {
       font-family: 'Varela Round', sans-serif;
-      color: #666666;
+      color: #555555;
       font-size: 30px;
+      text-align: center;
+      margin: 2rem auto;
+      max-width: 700px;
+      line-height: 1.4;
     }
 
     .highlight-percentage {
-      color: red;
+      color: #e63946;
       font-weight: bold;
       font-size: 36px;
     }
 
     /* Subscription form styles */
     .subscription-container {
+      display: none; /* Hide the email form */
       max-width: 500px;
       margin: 30px auto;
       padding: 20px;
@@ -98,7 +113,7 @@
 
     .subscription-button {
       font-family: 'Baloo', sans-serif;
-      background-color: black !important;
+      background-color: #444444 !important;
       color: white;
       padding: 10px 20px;
       border: none;
@@ -113,6 +128,24 @@
       background-color: #333333 !important;
     }
 
+    /* Footer link styles */
+    .footer-link {
+      margin: 30px 0 20px;
+      font-family: 'Varela Round', sans-serif;
+      font-size: 14px;
+    }
+
+    .footer-link a {
+      color: #777;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-link a:hover {
+      color: #555;
+      text-decoration: underline;
+    }
+
     /* Responsive styles for mobile devices */
     @media (max-width: 768px) {
       .app-title {
@@ -122,6 +155,7 @@
       .selector-container {
         flex-direction: column;
         align-items: center;
+        gap: 1rem;
       }
 
       .custom-form-control {
@@ -141,5 +175,15 @@
       .subscription-container {
         padding: 15px;
         margin: 30px auto;
+      }
+
+      .footer-link {
+        margin: 20px 0 15px;
+        font-size: 12px;
+      }
+      
+      .chart-container {
+        padding: 1rem;
+        min-height: 350px;
       }
     }
